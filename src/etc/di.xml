@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Mons Agency Ltd. Some rights reserved.
+ * See copying.md for details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- extends/override what defined in Magento_Base -->
+    <virtualType name="AlternativeSourceProcessors">
+        <arguments>
+            <argument name="alternatives" xsi:type="array">
+                <item name="scss" xsi:type="array">
+                    <item name="class" xsi:type="string">
+                        Mons\Scss\PreProcessor\Adapter\Scss\Processor</item>
+                </item>
+                <item name="less" xsi:type="array">
+                    <item name="after" xsi:type="string">
+                        scss</item>
+                    <item name="class" xsi:type="string">
+                        Magento\Framework\Css\PreProcessor\Adapter\Less\Processor</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PreProcessorInstructionImportForScssFlow"
+        type="Mons\Scss\PreProcessor\Instruction\Import">
+        <arguments>
+            <!-- FileGeneratorPublicationDecoratorForBaseFlow defined in Magento_Developer -->
+            <argument name="relatedFileGenerator" xsi:type="object">
+                FileGeneratorPublicationDecoratorForBaseFlow</argument>
+        </arguments>
+    </virtualType>
+    <!-- extends/override what defined in Magento_Developer -->
+    <virtualType name="AssetPreProcessorPool">
+        <arguments>
+            <argument name="preprocessors" xsi:type="array">
+                <item name="scss" xsi:type="array">
+                    <item name="scss_import" xsi:type="array">
+                        <item name="class" xsi:type="string">
+                            Mons\Scss\PreProcessor\Instruction\MagentoImport</item>
+                    </item>
+                    <item name="magento_import" xsi:type="array">
+                        <item name="after" xsi:type="string">
+                            scss_import</item>
+                        <item name="class" xsi:type="string">
+                            Magento\Framework\Css\PreProcessor\Instruction\MagentoImport</item>
+                    </item>
+                    <item name="import" xsi:type="array">
+                        <item name="after" xsi:type="string">
+                            magento_import</item>
+                        <item name="class" xsi:type="string">
+                            PreProcessorInstructionImportForScssFlow</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- extends/override what defined in Magento_Deploy -->
+    <virtualType name="AssetPreProcessorPoolForSourceThemeDeploy">
+        <arguments>
+            <argument name="preprocessors" xsi:type="array">
+                <item name="scss" xsi:type="array">
+                    <item name="scss_import" xsi:type="array">
+                        <item name="class" xsi:type="string">
+                            Mons\Scss\PreProcessor\Instruction\MagentoImport</item>
+                    </item>
+                    <item name="magento_import" xsi:type="array">
+                        <item name="after" xsi:type="string">
+                            scss_import</item>
+                        <item name="class" xsi:type="string">
+                            Magento\Framework\Css\PreProcessor\Instruction\MagentoImport</item>
+                    </item>
+                    <item name="import" xsi:type="array">
+                        <item name="after" xsi:type="string">
+                            magento_import</item>
+                        <item name="class" xsi:type="string">
+                            PreProcessorInstructionImportForScssFlow</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- <type name="Mons\Scss\PreProcessor\Instruction\MagentoImport">
+        <arguments>
+            <argument name="fileSource" xsi:type="object">
+                Magento\Framework\Css\PreProcessor\File\Collector\Aggregated</argument>
+        </arguments>
+    </type> -->
+    <!-- TBD -->
+    <type name="Magento\Developer\Model\View\Page\Config\RendererFactory">
+        <arguments>
+            <argument name="rendererTypes" xsi:type="array">
+                <item name="client_side_compilation" xsi:type="string">
+                    Mons\Scss\Model\View\Page\Config\ClientSideScssCompilation\Renderer</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Css\PreProcessor\File\Temporary">
+        <plugin name="mons-scss-framework-css-preprocessor-file-temporary"
+            type="Mons\Scss\Plugin\PreProcessor\File\TemporaryPlugin" />
+    </type>
+</config>

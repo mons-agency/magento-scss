@@ -1,0 +1,37 @@
+{
+    "name": "mons/magento-scss",
+    "description": "Module for SCSS processing during static content deployment",
+    "require": {
+        "php": "~8.1.0",
+        "magento/framework": "103.0.*",
+        "magento/module-deploy": "100.4.*",
+        "magento/module-developer": "100.4.*",
+        "scssphp/scssphp": "^1.11"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Filippo Bovo",
+            "homepage": "https://filippobovo.com",
+            "role": "Solutions architect"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "src/registration.php"
+        ],
+        "psr-4": {
+            "Mons\\Scss\\": "src/"
+        }
+    }
+}
