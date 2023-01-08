@@ -15,7 +15,7 @@ use Magento\Framework\View\Asset\PreProcessorInterface;
 use Magento\Framework\View\Asset\Repository as AssetRepository;
 use Magento\Framework\View\DesignInterface;
 use Magento\Framework\View\Design\ThemeInterface;
-use Magento\Framework\View\Design\Theme\ListInterface as ThemeListInterface;
+use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
 use Mons\Scss\PreProcessor\Helper\File as FileHelper;
 
 class MagentoImport implements PreProcessorInterface
@@ -25,7 +25,7 @@ class MagentoImport implements PreProcessorInterface
      * @param FileCollector $fileSource
      * @param ErrorHandlerInterface $errorHandler
      * @param AssetRepository $assetRepository
-     * @param ThemeListInterface $themeList
+     * @param ThemeProviderInterface $themeProvider
      * @param FileHelper $fileHelper
      */
     public function __construct(
@@ -33,7 +33,7 @@ class MagentoImport implements PreProcessorInterface
         protected FileCollector $fileSource,
         protected ErrorHandlerInterface $errorHandler,
         protected AssetRepository $assetRepository,
-        protected ThemeListInterface $themeList,
+        protected ThemeProviderInterface $themeProvider,
         protected FileHelper $fileHelper
     )
     {}
@@ -102,7 +102,7 @@ class MagentoImport implements PreProcessorInterface
         $context = $asset->getContext();
 
         if ($context instanceof FallbackContext) {
-            return $this->_themeProvider->getThemeByFullPath(
+            return $this->themeProvider->getThemeByFullPath(
                 $context->getAreaCode() . '/' . $context->getThemePath()
             );
         }
