@@ -80,11 +80,16 @@ class Processor implements ContentProcessorInterface
         $path = $asset->getPath();
 
         try {
+            /** @see https://github.com/magento/magento2/blob/2.4.5/lib/internal/Magento/Framework/View/Asset/Source.php#L121 */
             $content = $this->assetSource->getContent($asset);
 
-            // same behavior as LESS processor
+            // emulates default LESS processor behavior
             if (!$content || trim($content) === '') {
-                // return '';
+                // boolean when source file has not been found, maybe not a SCSS theme
+                if ($content === false) {
+                    return '';
+                }
+
                 throw new ContentProcessorException(
                     new Phrase('Compilation from source - SCSS file is empty: ' . $path)
                 );
